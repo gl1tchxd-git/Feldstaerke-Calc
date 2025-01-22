@@ -7,8 +7,8 @@ for i in range(sections):
     positionRi[2] += dl[2] / 2
     ri = subtractVector(positionRi, origin)
     r = subtractVector(positionH, origin)
-    addUp = calculateSum(dl, ri, r)
+    addUp = addVector(calculateSum(dl, ri, r), addUp)
 
 h = amperage / (4 * math.pi) * calculateVector(addUp)
 
-print(h)
+print("H = ", h, "A/m")
