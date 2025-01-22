@@ -1,5 +1,5 @@
-rH = 1.5e-2 #m
-amperage = 30 #A
+rH = 8e-2 #m
+amperage = 7.5 #A
 positionStart = [1.0, 2.0, -1.0]
 positionMiddle = [1.0, 2.0, -1.0]
 positionEnd = [1.0, 2.0, 1.0]
