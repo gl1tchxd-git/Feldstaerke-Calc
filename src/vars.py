@@ -1,7 +1,13 @@
 rH = 0.5 #m
 amperage = 3.5 #A
-vectorStart = [1.0, 2.0, -1.0]
-vectorEnd = [1.0, 2.0, 1.0]
+positionStart = [1.0, 2.0, -1.0]
+positionMiddle = [1.0, 2.0, -1.0]
+positionEnd = [1.0, 2.0, 1.0]
 sections = 2000 #n
-sectionLength = ( vectorEnd[2] - vectorStart[2] ) / sections
-positionH = [vectorStart[0] + rH, vectorStart[1], 0.0]
+sectionLength = (positionEnd[2] - positionStart[2]) / sections
+positionH = [positionStart[0] + rH, positionStart[1], 0.0]
+
+positionRi = [1.0, 2.0, -1.0]
+origin = [0, 0, 0]
+addUp = []
+h = 0
