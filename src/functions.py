@@ -17,3 +17,6 @@ def subtractVector (vector1, vector2):
 
 def divideVector (vector, number):
     return [vector[0] / number, vector[1] / number, vector[2] / number]
+
+def addVector (vector1, vector2):
+    return [vector1[0] + vector2[0], vector1[1] + vector2[1], vector1[2] + vector2[2]]
