@@ -38,6 +38,7 @@ jobs:
       if: env.branches_are_same == 'false'
       run: |
         git checkout master
+        mkdir -p ../rust-lib
         cp -r src/library/* ../rust-lib/
         git checkout rust-lib
         cp -r ../rust-lib/* .
