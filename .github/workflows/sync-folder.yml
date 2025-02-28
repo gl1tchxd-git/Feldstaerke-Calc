@@ -1,47 +1,35 @@
-name: Sync Library Folder
+name: Sync Library
 
 on:
   push:
     branches:
       - master
-    paths:
-      - 'src/library/**'
 
 jobs:
   sync-library:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout master branch
-        uses: actions/checkout@v2
-        with:
-          ref: master
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
-      - name: Set up Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+    - name: Check for updates in src/library
+      id: check_changes
+      run: |
+        git fetch origin rust-lib
+        changes=$(git diff --name-only HEAD^ HEAD src/library/)
+        echo "::set-output name=changes::$changes"
 
-      - name: Check for changes in src/library
-        id: check_changes
-        run: |
-          git fetch origin rust-lib
-          git diff --quiet HEAD origin/rust-lib -- src/library || echo "changes_detected=true" >> $GITHUB_ENV
-
-      - name: Checkout rust-lib branch
-        if: env.changes_detected == 'true'
-        run: git checkout rust-lib
-
-      - name: Sync library folder to rust-lib branch
-        if: env.changes_detected == 'true'
-        run: |
-          rsync -a --delete src/library/ .
-          git add .
-          git commit -m "Sync src/library from master branch" || echo "No changes to commit"
-          git push origin rust-lib
-
-      - name: Debugging - List files in rust-lib branch
-        if: env.changes_detected == 'true'
-        run: |
-          git checkout rust-lib
-          ls -la
+    - name: Sync library to rust-lib branch
+      if: steps.check_changes.outputs.changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        
+        git checkout rust-lib
+        rsync -a --delete src/library/ .
+        git add .
+        git commit -m "Sync library from master branch"
+        git push origin rust-lib
