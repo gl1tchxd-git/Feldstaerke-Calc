@@ -18,7 +18,8 @@ jobs:
     - name: Check for updates in src/library
       id: check_changes
       run: |
-        changes=$(git diff --name-only HEAD^ HEAD src/library/)
+        git fetch origin master
+        changes=$(git diff --name-only origin/master~1 origin/master src/library/)
         echo "changes=$changes" >> $GITHUB_ENV
 
     - name: Sync library to rust-lib branch
