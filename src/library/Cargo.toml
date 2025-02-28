@@ -4,6 +4,8 @@ version = "0.1.0"
 edition = "2024"
 authors = ["Felix Buchsteiner <contact@gl1tchxd.at", "Matthias Kühner <matthias.kuehner08@htl-salzburg.ac.at"]
 description = "Library for calculating field force inside various coils"
+homepage = "https://github.com/gl1tchxd-git/Feldstaerke-Calc/tree/rust-lib"
 repository = "https://github.com/gl1tchxd-git/Feldstaerke-Calc/tree/rust-lib"
+
 
 [dependencies]
