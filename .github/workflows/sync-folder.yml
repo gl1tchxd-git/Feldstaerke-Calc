@@ -28,11 +28,11 @@ jobs:
         git diff --quiet origin/master || echo "branches are different" > diff.txt
 
     - name: Display diff result
-      if: steps.check_diff.outputs.diff
+      if: success()
       run: cat diff.txt
 
     - name: Copy src/library to rust-lib branch
-      if: steps.check_diff.outputs.diff
+      if: success() && steps.check_diff.outputs.diff
       run: |
         git checkout master
         cp -r src/library/* ../rust-lib/
