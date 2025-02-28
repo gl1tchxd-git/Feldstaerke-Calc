@@ -1,0 +1,29 @@
+name: Sync Library Folder
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/library/**'
+
+jobs:
+  sync-folder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Sync library folder to another branch
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b rust-lib origin/rust-lib || git checkout rust-lib
+          git rm -r --cached . || true
+          git checkout main -- src/library/
+          git add src/library/
+          git commit -m "Sync library folder from main branch"
+          git push origin rust-lib
