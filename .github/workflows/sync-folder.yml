@@ -23,7 +23,7 @@ jobs:
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout -b rust-lib origin/rust-lib || git checkout rust-lib
           git rm -r --cached . || true
-          git checkout main -- src/library/
+          git checkout master -- src/library/
           git add src/library/
-          git commit -m "Sync library folder from main branch"
+          git commit -m "Sync library folder from master branch"
           git push origin rust-lib
