@@ -16,19 +16,28 @@ jobs:
       with:
         ref: master
 
-    - name: Fetch rust-lib branch
-      run: git fetch origin rust-lib
+    - name: Fetch all branches
+      run: git fetch --all
 
-    - name: Check if branches are different
+    - name: Checkout rust-lib branch
+      run: git checkout rust-lib
+
+    - name: Compare branches
       id: check_diff
       run: |
-        git diff --quiet origin/rust-lib || echo "branches are different" > diff.txt
+        git diff --quiet origin/master || echo "branches are different" > diff.txt
+
+    - name: Display diff result
+      if: steps.check_diff.outputs.diff
+      run: cat diff.txt
 
     - name: Copy src/library to rust-lib branch
       if: steps.check_diff.outputs.diff
       run: |
+        git checkout master
+        cp -r src/library/* ../rust-lib/
         git checkout rust-lib
-        cp -r src/library/* .
+        cp -r ../rust-lib/* .
         git add .
         git commit -m "Sync library from master"
         git push origin rust-lib
