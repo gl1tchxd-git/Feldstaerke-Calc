@@ -1,43 +1,34 @@
-name: Sync Library
+name: Sync Rust Library
 
 on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
-  sync-library:
+  sync-rust-lib:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the repository
-      uses: actions/checkout@v2
+    - name: Checkout master branch
+      uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        ref: master
 
-    - name: Check for updates in src/library
-      id: check_changes
+    - name: Fetch rust-lib branch
+      run: git fetch origin rust-lib
+
+    - name: Check if branches are different
+      id: check_diff
       run: |
-        git fetch origin master
-        changes=$(git diff --name-only origin/master~1 origin/master src/library/)
-        echo "changes=$changes" >> $GITHUB_ENV
+        git diff --quiet origin/rust-lib || echo "branches are different" > diff.txt
 
-    - name: Sync library to rust-lib branch
-      if: env.changes
+    - name: Copy src/library to rust-lib branch
+      if: steps.check_diff.outputs.diff
       run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
         git checkout rust-lib
-
-        # Ensure src/library directory exists
-        if [ -d "src/library" ]; then
-          rsync -a --delete src/library/ .
-        else
-          echo "src/library directory does not exist. Skipping rsync."
-          exit 0
-        fi
-        
+        cp -r src/library/* .
         git add .
-        git commit -m "Sync library from master branch"
+        git commit -m "Sync library from master"
         git push origin rust-lib
