@@ -34,6 +34,12 @@ jobs:
     - name: Display diff result
       run: echo "Branches are different, proceeding with copy"
 
+    - name: Set up Git user
+      if: env.branches_are_same == 'false'
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+
     - name: Copy src/library to rust-lib branch
       if: env.branches_are_same == 'false'
       run: |
