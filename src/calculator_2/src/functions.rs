@@ -31,10 +31,10 @@ pub fn calculate_sum(dl: &Vec<f64>, cross_product: &mut Vec<f64>, vector_differe
     divide_vector(cross_product, &calculate_vector(vector_difference).powi(3), vec3)
 }
 
-pub fn change_position (vec: &mut Vec<f64>, wireD: &f64, cylinderD: &f64, sections: u64) -> () {
-    if vec[2] > 0.0 { vec[0] += ( wireD + cylinderD ) / sections as f64; }
-    else { vec[0] -= ( wireD + cylinderD) / sections as f64; }
-    vec[1] += wireD / sections as f64;
-    if vec[0] > 0.0 { vec[2] -= ( wireD + cylinderD ) / sections as f64; }
-    else { vec[2] += ( wireD + cylinderD ) / sections as f64; }
+pub fn change_position (vec: &mut Vec<f64>, wire_d: &f64, cylinder_d: &f64, sections: i64) -> () {
+    if vec[2] > 0.0 { vec[0] += ( wire_d + cylinder_d ) / sections as f64; }
+    else { vec[0] -= ( wire_d + cylinder_d) / sections as f64; }
+    vec[1] += wire_d / sections as f64;
+    if vec[0] > 0.0 { vec[2] -= ( wire_d + cylinder_d ) / sections as f64; }
+    else { vec[2] += ( wire_d + cylinder_d ) / sections as f64; }
 }
