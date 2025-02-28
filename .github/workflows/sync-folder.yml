@@ -24,11 +24,16 @@ jobs:
 
       - name: Sync library folder to another branch
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
+          git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/gl1tchxd-git/Feldstaerke-Calc.git
           git checkout -b rust-lib origin/rust-lib || git checkout rust-lib
           git rm -r --cached . || true
           git checkout master -- src/library/
-          git add src/library/
+          mkdir temp_library
+          mv src/library/* temp_library/
+          mv temp_library/* .
+          rm -rf temp_library src/library
+          git add .
           git commit -m "Sync library folder from master branch"
           git push origin rust-lib
