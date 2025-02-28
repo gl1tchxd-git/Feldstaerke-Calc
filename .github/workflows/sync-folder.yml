@@ -18,13 +18,11 @@ jobs:
     - name: Check for updates in src/library
       id: check_changes
       run: |
-        git fetch origin rust-lib
         changes=$(git diff --name-only HEAD^ HEAD src/library/)
         echo "changes=$changes" >> $GITHUB_ENV
-        echo "::set-output name=changes::$changes"
 
     - name: Sync library to rust-lib branch
-      if: steps.check_changes.outputs.changes
+      if: env.changes
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
