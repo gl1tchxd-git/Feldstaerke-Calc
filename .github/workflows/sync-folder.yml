@@ -26,13 +26,22 @@ jobs:
         id: check_changes
         run: |
           git fetch origin rust-lib
-          git diff --quiet HEAD origin/rust-lib -- src/library || echo "Changes detected"
+          git diff --quiet HEAD origin/rust-lib -- src/library || echo "changes_detected=true" >> $GITHUB_ENV
+
+      - name: Checkout rust-lib branch
+        if: env.changes_detected == 'true'
+        run: git checkout rust-lib
 
       - name: Sync library folder to rust-lib branch
-        if: steps.check_changes.outputs.changes_detected == 'Changes detected'
+        if: env.changes_detected == 'true'
         run: |
-          git checkout rust-lib
           rsync -a --delete src/library/ .
           git add .
-          git commit -m "Sync src/library from master branch"
+          git commit -m "Sync src/library from master branch" || echo "No changes to commit"
           git push origin rust-lib
+
+      - name: Debugging - List files in rust-lib branch
+        if: env.changes_detected == 'true'
+        run: |
+          git checkout rust-lib
+          ls -la
