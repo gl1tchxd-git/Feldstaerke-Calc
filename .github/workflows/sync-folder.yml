@@ -17,10 +17,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Sync library folder to another branch
+      - name: Set up Git
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Sync library folder to another branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           git checkout -b rust-lib origin/rust-lib || git checkout rust-lib
           git rm -r --cached . || true
           git checkout master -- src/library/
