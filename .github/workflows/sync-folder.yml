@@ -20,6 +20,7 @@ jobs:
       run: |
         git fetch origin rust-lib
         changes=$(git diff --name-only HEAD^ HEAD src/library/)
+        echo "changes=$changes" >> $GITHUB_ENV
         echo "::set-output name=changes::$changes"
 
     - name: Sync library to rust-lib branch
@@ -27,9 +28,17 @@ jobs:
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        
+
         git checkout rust-lib
-        rsync -a --delete src/library/ .
+
+        # Ensure src/library directory exists
+        if [ -d "src/library" ]; then
+          rsync -a --delete src/library/ .
+        else
+          echo "src/library directory does not exist. Skipping rsync."
+          exit 0
+        fi
+        
         git add .
         git commit -m "Sync library from master branch"
         git push origin rust-lib
