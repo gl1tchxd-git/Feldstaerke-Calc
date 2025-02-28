@@ -8,30 +8,31 @@ on:
       - 'src/library/**'
 
 jobs:
-  sync-folder:
+  sync-library:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout master branch
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          ref: master
 
       - name: Set up Git
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Sync library folder to another branch
-        env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - name: Check for changes in src/library
+        id: check_changes
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/gl1tchxd-git/Feldstaerke-Calc.git
-          git checkout -b rust-lib origin/rust-lib || git checkout rust-lib
-          git rm -rf ./*
-          git checkout master -- src/library/
-          mv src/library/* ./
-          rm -rf src/library
+          git fetch origin rust-lib
+          git diff --quiet HEAD origin/rust-lib -- src/library || echo "Changes detected"
+
+      - name: Sync library folder to rust-lib branch
+        if: steps.check_changes.outputs.changes_detected == 'Changes detected'
+        run: |
+          git checkout rust-lib
+          rsync -a --delete src/library/ .
           git add .
-          git commit -m "Sync library folder from master branch"
+          git commit -m "Sync src/library from master branch"
           git push origin rust-lib
