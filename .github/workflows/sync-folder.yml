@@ -1,38 +1,53 @@
-name: Sync Library Folder
+name: Sync Rust Library
 
 on:
   push:
     branches:
       - master
-    paths:
-      - 'src/library/**'
+  workflow_dispatch:
 
 jobs:
-  sync-library:
+  sync-rust-lib:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout master branch
-        uses: actions/checkout@v2
-        with:
-          ref: master
+    - name: Checkout master branch
+      uses: actions/checkout@v3
+      with:
+        ref: master
 
-      - name: Set up Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+    - name: Fetch all branches
+      run: git fetch --all
 
-      - name: Check for changes in src/library
-        id: check_changes
-        run: |
-          git fetch origin rust-lib
-          git diff --quiet HEAD origin/rust-lib -- src/library || echo "Changes detected"
+    - name: Checkout rust-lib branch
+      run: git checkout rust-lib
 
-      - name: Sync library folder to rust-lib branch
-        if: steps.check_changes.outputs.changes_detected == 'Changes detected'
-        run: |
-          git checkout rust-lib
-          rsync -a --delete src/library/ .
-          git add .
-          git commit -m "Sync src/library from master branch"
-          git push origin rust-lib
+    - name: Compare branches
+      id: check_diff
+      run: |
+        if git diff --quiet origin/master; then
+          echo "branches_are_same=true" >> $GITHUB_ENV
+        else
+          echo "branches_are_same=false" >> $GITHUB_ENV
+        fi
+
+    - name: Display diff result
+      run: echo "Branches are different, proceeding with copy"
+
+    - name: Set up Git user
+      if: env.branches_are_same == 'false'
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+
+    - name: Copy src/library to rust-lib branch
+      if: env.branches_are_same == 'false'
+      run: |
+        git checkout master
+        mkdir -p ../rust-lib
+        cp -r src/library/* ../rust-lib/
+        git checkout rust-lib
+        cp -r ../rust-lib/* .
+        git add .
+        git commit -m "Sync library from master"
+        git push origin rust-lib
