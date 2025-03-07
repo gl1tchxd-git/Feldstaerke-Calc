@@ -1,12 +1,12 @@
 import math
 
-def changePosition (positionStart, drahtD, zylinderD, sectionsPerLoop):
+def changePosition (positionStart, drahtD, zylinderD, zylinderL, sectionsPerLoop, n):
     if positionStart[2] > 0:
         positionStart[0] += (drahtD + zylinderD) / sectionsPerLoop
     else:
         positionStart[0] -= (drahtD + zylinderD) / sectionsPerLoop
 
-    positionStart[1] += drahtD / sectionsPerLoop
+    positionStart[1] += zylinderL / (sectionsPerLoop * n)
 
     if positionStart[0] > 0:
         positionStart[2] -= (drahtD + zylinderD) / sectionsPerLoop
