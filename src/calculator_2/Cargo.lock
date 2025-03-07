@@ -3,14 +3,13 @@
 version = 4
 
 [[package]]
-name = "micromath"
-version = "2.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c3c8dda44ff03a2f238717214da50f65d5a53b45cd213a7370424ffdb6fae815"
+name = "coil_calculator"
+version = "0.1.0"
+source = "git+https://github.com/gl1tchxd-git/Feldstaerke-Calc?tag=v1.0-alpha.1#3d1311c8d2a72d9778095201fa92bcfd13aa6e58"
 
 [[package]]
 name = "rust"
 version = "0.1.0"
 dependencies = [
- "micromath",
+ "coil_calculator",
 ]

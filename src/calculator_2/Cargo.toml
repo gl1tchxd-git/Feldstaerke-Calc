@@ -4,4 +4,4 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-micromath = "2.1.0"
+coil_calculator = { git = "https://github.com/gl1tchxd-git/Feldstaerke-Calc", tag = "v1.0-alpha.1", version = "0.1.0" }
