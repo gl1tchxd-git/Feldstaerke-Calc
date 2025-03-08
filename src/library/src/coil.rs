@@ -1,6 +1,5 @@
 use crate::solenoid::Solenoid;
 use crate::toroidal::Toroidal;
-use crate::circular::Circular;
 
 pub enum Coil {
     Solenoid(Solenoid),
