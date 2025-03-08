@@ -8,9 +8,7 @@ pub struct Toroidal {
 }
 
 impl Toroidal {
-    pub fn calculate_field(&self, point: (f64, f64, f64)) -> (f64, f64, f64) {
-        // Calculate the magnetic field at a point due to a toroidal coil
-        // This is a simplified example, in reality, you would integrate along the coil
-        (0.0, 0.0, 0.0) // Placeholder implementation
+    pub fn calculate_field(&self) -> f64 {
+        0.0
     }
 }
