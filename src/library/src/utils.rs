@@ -4,10 +4,10 @@ pub fn cross_product(vec_left: &[f64; 3], vec_right: &[f64; 3], vec_prod: &mut [
     vec_prod[2] = vec_left[0] * vec_right[1] - vec_left[1] * vec_right[0];
 }
 
-pub fn vec_add(vec1: &[f64; 3], vec2: &[f64; 3], vec_sum: &mut [f64; 3]) {
-    vec_sum[0] = vec1[0] + vec2[0];
-    vec_sum[1] = vec1[1] + vec2[1];
-    vec_sum[2] = vec1[2] + vec2[2];
+pub fn vec_add(vec_base: &mut [f64; 3], vec_summand: &[f64; 3]) {
+    vec_base[0] = vec_base[0] + vec_summand[0];
+    vec_base[1] = vec_base[1] + vec_summand[1];
+    vec_base[2] = vec_base[2] + vec_summand[2];
 }
 
 pub fn vec_diff(vec_pos: &[f64; 3], vec_origin: &[f64; 3], vec_diff: &mut [f64; 3]) {
@@ -23,7 +23,7 @@ pub fn vec_div(vec: &[f64; 3], divisor: f64, vec_quot: &mut [f64; 3]) {
 }
 
 pub fn abs3(vec: &[f64; 3], abs3: &mut f64) {
-    *abs3 = (vec[0].powi(2) + vec[1].powi(2) + vec[2].powi(2)).sqrt().powi(3);
+    *abs3 = ((vec[0].powi(2) + vec[1].powi(2) + vec[2].powi(2)).sqrt()).powi(3);
 }
 
 pub fn change_pos(pos_start: &mut [f64; 3], wire_radius: f64, cylinder_radius: f64, cylinder_length: f64, iterations: usize, turns: usize) {
@@ -38,4 +38,20 @@ pub fn change_pos(pos_start: &mut [f64; 3], wire_radius: f64, cylinder_radius: f
     } else {
         pos_start[2] -= (wire_radius + cylinder_radius) / iterations as f64;
     }
+}
+
+pub fn calc(dl: &[f64; 3], ri: &[f64; 3], r: &[f64; 3], result: &mut [f64; 3]) {
+    let mut x: [f64; 3] = [0.0; 3];
+    let mut y: [f64; 3] = [0.0; 3];
+    let mut z:  f64 = 0.0;
+    
+    vec_diff(&r, &ri, &mut x);
+    cross_product(&dl, &x, &mut y);
+    abs3(&x, &mut z);
+    vec_div(&y, z, result);
+}
+
+pub fn vec_len(vec: &[f64; 3]) -> f64 {
+    (vec[0].powi(2) + vec[1].powi(2) + vec[2].powi(2)).sqrt()
+    
 }

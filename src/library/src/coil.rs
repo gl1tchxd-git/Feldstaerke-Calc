@@ -1,16 +1,38 @@
+use crate::infinite::Infinite;
 use crate::solenoid::Solenoid;
-use crate::toroidal::Toroidal;
 
 pub enum Coil {
+    Infinite(Infinite),
     Solenoid(Solenoid),
-    Toroidal(Toroidal),
+}
+
+impl From<(f64, f64, usize)> for Infinite {
+    fn from((r_h, current, l): (f64, f64, usize)) -> Self {
+        Infinite {
+            r_h,
+            current,
+            l,
+        }
+    }
+}
+
+impl From<(f64, usize, f64, f64, f64)> for Solenoid {
+    fn from((current, turns, length, radius, wire_radius): (f64, usize, f64, f64, f64)) -> Self {
+        Solenoid {
+            current,
+            turns,
+            length,
+            radius,
+            wire_radius,
+        }
+    }
 }
 
 impl Coil {
     pub fn calculate(&self, iterations: usize) -> f64 {
         match self {
-            Coil::Solenoid(solenoid) => solenoid.calculate(iterations),
-            Coil::Toroidal(toroidal) => toroidal.calculate_field(),
+            Coil::Infinite(infinite) => infinite.calculate_field(iterations),
+            Coil::Solenoid(solenoid) => solenoid.calculate_field(iterations)
         }
     }
 }
