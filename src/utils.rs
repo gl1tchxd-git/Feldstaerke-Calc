@@ -1,4 +1,4 @@
-pub fn cross_product(vec_left: &[f64], vec_right: &[f64], vec_prod: &mut [f64]) {
+pub fn cross_product(vec_left: &[f64; 3], vec_right: &[f64; 3], vec_prod: &mut [f64; 3]) {
     vec_prod[0] = vec_left[1] * vec_right[2] - vec_left[2] * vec_right[1];
     vec_prod[1] = vec_left[2] * vec_right[0] - vec_left[0] * vec_right[2];
     vec_prod[2] = vec_left[0] * vec_right[1] - vec_left[1] * vec_right[0];
