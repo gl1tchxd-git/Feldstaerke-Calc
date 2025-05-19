@@ -108,7 +108,7 @@ mod tests {
     
     #[test]
     fn test_infinite() {
-        let coil: Coil = Coil::Infinite((0.02, 3.5, 2000).into());
+        let coil: Coil = Coil::Infinite((0.05, 3.5, 2000).into());
         assert_eq!(coil.calculate(200), 11.697892841760549);
     }
 }
