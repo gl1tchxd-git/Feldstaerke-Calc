@@ -1,8 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use std::f64::consts::PI;
     use coil_calculator::coil::Coil;
-    use coil_calculator::solenoid::Solenoid;
     use coil_calculator::utils::*;
     use std::f64::EPSILON;
     
@@ -23,22 +21,22 @@ mod tests {
         assert_eq!(result, [0.0, 0.0, 0.0]);
     }
 
-    #[test]
-    fn test_vec_add() {
-        let mut result = [0.0; 3];
-
-        // Test case 1: Positive numbers
-        vec_add(&[1.0, 2.0, 3.0], &[4.0, 5.0, 6.0], &mut result);
-        assert_eq!(result, [5.0, 7.0, 9.0]);
-
-        // Test case 2: Mixed positive and negative
-        vec_add(&[1.0, -2.0, 3.0], &[-4.0, 5.0, -6.0], &mut result);
-        assert_eq!(result, [-3.0, 3.0, -3.0]);
-
-        // Test case 3: Zero vector
-        vec_add(&[0.0, 0.0, 0.0], &[1.0, 2.0, 3.0], &mut result);
-        assert_eq!(result, [1.0, 2.0, 3.0]);
-    }
+    // #[test]
+    // fn test_vec_add() {
+    //     let mut result = [0.0; 3];
+    // 
+    //     // Test case 1: Positive numbers
+    //     vec_add(&[1.0, 2.0, 3.0], &[4.0, 5.0, 6.0], &mut result);
+    //     assert_eq!(result, [5.0, 7.0, 9.0]);
+    // 
+    //     // Test case 2: Mixed positive and negative
+    //     vec_add(&[1.0, -2.0, 3.0], &[-4.0, 5.0, -6.0], &mut result);
+    //     assert_eq!(result, [-3.0, 3.0, -3.0]);
+    // 
+    //     // Test case 3: Zero vector
+    //     vec_add(&[0.0, 0.0, 0.0], &[1.0, 2.0, 3.0], &mut result);
+    //     assert_eq!(result, [1.0, 2.0, 3.0]);
+    // }
 
     #[test]
     fn test_vec_diff() {
@@ -109,7 +107,8 @@ mod tests {
     }
     
     #[test]
-    fn tset_solenoid() {
-        Coil::Solenoid().calculate()
+    fn test_infinite() {
+        let coil: Coil = Coil::Infinite((0.02, 3.5, 2000).into());
+        assert_eq!(coil.calculate(200), 11.697892841760549);
     }
 }

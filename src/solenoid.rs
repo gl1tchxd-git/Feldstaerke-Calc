@@ -11,7 +11,7 @@ pub struct Solenoid {
 }
 
 impl Solenoid {
-    pub fn calculate(&self, iterations: usize) -> f64 {
+    pub fn calculate_field(&self, iterations: usize) -> f64 {
         let mut sum: [f64; 3] = [0.0; 3];
         let mut pos_start = [0.0; 3];
         
@@ -26,7 +26,7 @@ impl Solenoid {
 
             vec_diff(&pos_end, &pos_start, &mut dl);
             vec_div(&dl, 2.0, &mut dl_half);
-            vec_add(&pos_start, &dl_half, &mut ri);  // Middle point of the current element
+            vec_add(&mut pos_start, &dl_half);  // Middle point of the current element
 
             biot_savart(dl, r, ri, sum);
             
