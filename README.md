@@ -14,4 +14,4 @@ coil_calculator = {git = "https://github.com/gl1tchxd-git/Feldstaerke-Calc", tag
 ...
 ```
 
-### PRs are appreciated^^
+### PRs are appreciated ^^
