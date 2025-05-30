@@ -1,9 +1,9 @@
 ## Rust library for creating and calculating various electrical forces in various types of coils
 
 ### Status
-Infinite Conductors   Working\
-Solenoid Coils        In the making\
-Toroidal Coils        Planned
+Infinite Conductors:  Working\
+Solenoid Coils:       In the making\
+Toroidal Coils:       Planned
 
 ### Installation
 In cargo.toml
